@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What TODO App</title>
+    <script src="./js/data.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="addNew">
+            <div class="container">
+
+                <form id="formTop">
+                    <input type="text" name="createBtn" placeholder="Create TODO">
+                    <select name="addSelector" id="addSelector">
+                        <option value="">Priority</option>
+                        <!-- <option value="urgent">Urgent</option>
+                        <option value="daily">Daily</option>
+                        <option value="monthly">Monthly</option> -->
+                    </select>
+                    <input type="submit" value="Create TODO">
+                </form>
+
+            </div>
+        </header>
+
+        <main>
+            <section class="filters">
+                <div class="container">
+
+                    <form id="formBottom">
+                        <select name="filterSelector" id="filterSelector">
+                            <option value="">Priority</option>
+                            <!-- <option value="urgent">Urgent</option>
+                            <option value="daily">Daily</option>
+                            <option value="monthly">Monthly</option> -->
+                        </select>
+                        <input type="text" name="nameFilter" placeholder="Name">
+                    </form>
+
+                </div>
+            </section>
+
+            <section class="todoList">
+                <div class="todoContainer">
+                    <!-- <div class="todo">
+                        <input type="checkbox" id="item1">
+                        <label for="item1">TODO Text <button>Remove</button></label>
+                    </div> -->
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script src="./js/todo.js"></script>
+</body>
+
+</html>
