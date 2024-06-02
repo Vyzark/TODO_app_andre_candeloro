@@ -41,6 +41,11 @@ const todoList = [
     },
 ];
 
+// Separate TODO's into to lists:
+// todoList
+// doneList
+// Create a function that will move check marked items from one list to the other (use splice?)
+
 // Create:
 // 1. filterByName --> for the <select> filter
 // 2. filterByPriority --> for <input> or <search> (choose one) text input

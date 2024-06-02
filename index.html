@@ -10,47 +10,76 @@
 </head>
 
 <body>
+
     <div class="wrapper">
-        <header class="addNew">
-            <div class="container">
+        <div class="title">
+            <h1>WHAT TO DO? APP</h1>
+        </div>
+        <header>
+            <div class="addNew">
 
                 <form id="formTop">
                     <input type="text" name="createBtn" placeholder="Create TODO">
                     <select name="addSelector" id="addSelector">
                         <option value="">Priority</option>
-                        <!-- <option value="urgent">Urgent</option>
+                        <option value="urgent">Urgent</option>
                         <option value="daily">Daily</option>
-                        <option value="monthly">Monthly</option> -->
+                        <option value="monthly">Monthly</option>
                     </select>
                     <input type="submit" value="Create TODO">
+                </form>
+
+            </div>
+
+            <div class="filter">
+
+                <form id="formBottom">
+                    <select name="filterSelector" id="filterSelector">
+                        <option value="">Priority</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="daily">Daily</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                    <input type="text" name="nameFilter" placeholder="Name">
                 </form>
 
             </div>
         </header>
 
         <main>
-            <section class="filters">
-                <div class="container">
-
-                    <form id="formBottom">
-                        <select name="filterSelector" id="filterSelector">
-                            <option value="">Priority</option>
-                            <!-- <option value="urgent">Urgent</option>
-                            <option value="daily">Daily</option>
-                            <option value="monthly">Monthly</option> -->
-                        </select>
-                        <input type="text" name="nameFilter" placeholder="Name">
-                    </form>
-
-                </div>
-            </section>
-
-            <section class="todoList">
+            <section>
                 <div class="todoContainer">
-                    <!-- <div class="todo">
-                        <input type="checkbox" id="item1">
-                        <label for="item1">TODO Text <button>Remove</button></label>
-                    </div> -->
+                    <div class="todo">
+                        <h2>TO DO</h2>
+
+                        <div class="check">
+                            <input type="checkbox" id="item1">
+                            <label for="item1">TODO Text 2 <button>Remove</button> </label>
+                        </div>
+
+                        <div class="check">
+                            <input type="checkbox" id="item1">
+                            <label for="item1">TODO Text 3 <button>Remove</button> </label>
+                        </div>
+
+                        <div class="check">
+                            <input type="checkbox" id="item1">
+                            <label for="item1">TODO Text 3 <button>Remove</button> </label>
+                        </div>
+
+                    </div>
+                    <div class="done">
+                        <h2>DONE</h2>
+                        <div class="check" checked>
+                            <input type="checkbox" id="item1">
+                            <label for="item1">TODO Text 1 <button>Remove</button> </label>
+                        </div>
+
+                        <div class="check">
+                            <input type="checkbox" id="item1">
+                            <label for="item1">TODO Text 3 <button>Remove</button> </label>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
