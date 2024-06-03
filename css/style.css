@@ -53,8 +53,6 @@ div.title {
         border: 2px solid var(--daily-color);
         border-radius: 15px;
         padding: 15px 30px;
-        /* text-shadow: 0.5px 0.5px 2px #57f55f;
-        box-shadow: 0px 0px 8px 5px #57f55fde; */
         animation: glow 2s linear infinite;
 
         &:after {
@@ -68,8 +66,6 @@ div.title {
             border: 1px solid var(--daily-color);
             border-radius: 15px;
             padding: 15px 30px;
-            /* text-shadow: 0.5px 0.5px 2px #57f55f;
-            box-shadow: 0px 0px 15px 5px #57f55ff6; */
             animation: glow 3s linear infinite;
         }
     }
@@ -304,7 +300,7 @@ input[type="checkbox"]:checked + label::before {
         text-shadow: 1px 1px 8px #57f55f;
         box-shadow: 0px 0px 16px 10px #57f55fde;
     }
-    60%{
+    60% {
         text-shadow: 0.9px 0.9px 6px #57f55f;
         box-shadow: 0px 0px 14px 9px #57f55fde;
     }
