@@ -2,7 +2,6 @@
 /* TODO: Create media queries */
 /** ########################################################### **/
 
-
 /* https://codepen.io/mystbrent/pen/QMVmwz */
 /* https://codepen.io/mamta_d/pen/ZEMLRaq */
 @import url("https://fonts.cdnfonts.com/css/helvetica-neue-5");
@@ -20,7 +19,7 @@
     /* --bg-color: #2364aa; */
     --bg-color: #67a4e6ef;
     --bg-dark: #063750;
-    --accent-color: #73bfb7;
+    --accent-color: #90cec8;
     --urgent-color: #ff3c00;
     --daily-color: #fec601;
     --monthly-color: #3bbeff;
@@ -100,17 +99,22 @@ header div.addNew {
         min-width: 12.5rem;
         width: 35%;
         padding: 0.12rem;
-        font-size: 1.1rem;
+        font-size: 1rem;
         border: none;
         border-bottom: 1px solid black;
         box-shadow: 1px 1px 1px 1px black;
         background-color: #00000050;
         color: white;
+        &::placeholder {
+            font-size: 0.95rem;
+            opacity: 0.5;
+        }
     }
     & select {
         background-color: #00000000;
         border: none;
         color: white;
+        font-size: 1.02rem;
         &:focus {
             background-color: var(--bg-dark);
         }
@@ -150,6 +154,37 @@ header div.filter {
     background-color: var(--accent-color);
 }
 
+#formBottom {
+    display: flex;
+    gap: 0.9375rem;
+    & input[type="search"] {
+        min-width: 12.5rem;
+        width: 35%;
+        padding: 0.12rem;
+        font-size: 1rem;
+        border: none;
+        border-bottom: 1px solid #333;
+        box-shadow: 1px 1px 1px 1px #333;
+        background-color: #00000050;
+        color: white;
+
+        &::placeholder {
+            color: rgba(0, 0, 0, 0.719);
+        }
+    }
+
+    & select {
+        background-color: #00000000;
+        border: none;
+        color: rgb(0, 0, 0);
+        font-size: 1.02rem;
+        &:focus {
+            background-color: #063750b0;
+            color: white;
+        }
+    }
+}
+
 /** --------PRIORITY-CLASSES-------- **/
 
 .urgent {
@@ -164,7 +199,6 @@ header div.filter {
     color: var(--monthly-color);
     border: 2px solid var(--monthly-color);
 }
-
 
 .wrapper {
     max-width: 75rem;
@@ -271,8 +305,7 @@ h2 {
     font-family: var(--title-font);
 }
 
-:is(.done,
-.todo) {
+:is(.done, .todo) {
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
@@ -284,8 +317,7 @@ h2 {
     font-weight: 700;
 }
 
-:is(.done h2,
-.todo h2):before {
+:is(.done h2, .todo h2):before {
     content: "";
     display: block;
     position: absolute;
@@ -296,13 +328,12 @@ h2 {
     background-color: #ffffff;
 }
 
-:is(.done h2,
-.todo h2):after {
+:is(.done h2, .todo h2):after {
     display: block;
     float: right;
     font-weight: normal;
 }
-/** ---------------UNFINISHED------------------- **/
+
 input[type="checkbox"] {
     position: absolute;
     top: 0.8125rem;
@@ -332,7 +363,9 @@ input[type="checkbox"]:checked + label::before {
 label:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
-
+/** ---------------UNFINISHED------------------------------------------------------------------------------------------------------------------**/
+/** ------------------------------------------------------------------------------------------------------------------------------------------ */
+/** ----------------------------------------------------------------------------------------------------------------------------------------- */
 .submit-button {
     font-size: 1.0625rem;
     padding: 0.5em 2em;
@@ -382,10 +415,6 @@ label:hover {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
         sans-serif;
-}
-
-::placeholder {
-    color: rgb(184, 184, 184);
 }
 
 /** -----------------------ANIMATIONS----------------------- **/
