@@ -31,6 +31,11 @@ const doneList = [
 // 1. filterByPriority --> for the <select> filter
 // 2. filterByName --> for <input> text
 
+//* --------------------------AUXILIARY FUNCTIONS----------------------------------------->>
+function capitalize(string) {
+    return string.at(0).toUpperCase() + string.slice(1, string.length);
+}
+
 function removeAccentuation(text) {
     let result = text.replaceAll("á", "a");
     result = text.replaceAll("é", "e");
@@ -51,7 +56,35 @@ function filterByName(list, text) {
     );
 }
 
-// Model - Check functionality
+//TODO: Model - Check functionality
 function filterByPriority(list, domElem) {
     return list.filter((todo) => todo.priority === domElem.value);
+}
+
+// Function to get a list of priority values. 
+// Returns all possible values by default or can receive the todoList or doneList separately
+//? Maybe add a custom priority button?
+function getPriorityList(list = [...todoList, ...doneList]) {
+    const newList = []
+    list.forEach((todo) => {
+        newList.push(todo.priority);
+    })
+    console.log(newList);
+    return [...new Set(newList)]
+}
+
+//* Load to-do's from Local Storage ------------------------------------>>
+function loadStored() {
+    const localList = JSON.parse(localStorage.getItem("whatToDos"));
+    return localList;
+}
+
+//* Check Duplicated Objects in a list ------------------------------------>>
+function checkDuplicates(list, newObj) {
+    let isDuped = list.some((todo) => todo.task === newObj.task && todo.priority === newObj.priority);
+    if (!isDuped) {
+        // If it's not dupped in the list, return true
+        return true;
+    }
+    return false;
 }
