@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What TODO App</title>
+    <title>What TO-DO App</title>
     <script src="./js/data.js"></script>
     <script src="https://kit.fontawesome.com/7787e1d628.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/style.css">
@@ -20,30 +20,32 @@
             <div class="addNew">
 
                 <form id="formTop">
-                    <input type="text" name="createBtn" placeholder="What To-Do today?">
+                    <input type="text" name="createBtn" placeholder="What To-Do today?...">
                     <select name="addSelector" id="addSelector">
                         <option value="">Priority</option>
-                        <option value="urgent">Urgent</option>
+                        <!-- <option value="urgent">Urgent</option>
                         <option value="daily">Daily</option>
-                        <option value="monthly">Monthly</option>
+                        <option value="monthly">Monthly</option> -->
                     </select>
-                    <input type="submit" value=" "><span id="plusIcon"><i
-                            class="fa-regular fa-square-plus fa-2xl"></i></span>
+                    <input type="submit" value="ADD">
+                    <span id="plusIcon">
+                        <i class="fa-regular fa-square-plus fa-2xl"></i>
+                    </span>
                 </form>
 
             </div>
 
             <div class="filter">
 
-                <form id="formBottom">
+                <div id="filterBottom">
                     <select name="filterSelector" id="filterSelector">
                         <option value="">Priority</option>
-                        <option value="urgent">Urgent</option>
+                        <!-- <option value="urgent">Urgent</option>
                         <option value="daily">Daily</option>
-                        <option value="monthly">Monthly</option>
+                        <option value="monthly">Monthly</option> -->
                     </select>
-                    <input type="search" name="nameFilter" placeholder="Search your To-Do's" spellcheck="true">
-                </form>
+                    <input type="search" name="nameFilter" placeholder="Search your To-Do's..." spellcheck="true">
+                </div>
 
             </div>
         </header>
@@ -54,7 +56,7 @@
                     <div class="todo">
                         <h2>TO DO</h2>
 
-                        <div class="check">
+                        <!-- <div class="check">
                             <input type="checkbox" id="item1">
                             <label for="item1" class="urgent">TODO Text 1
                                 <button class="noSelect">
@@ -69,54 +71,15 @@
                                     </span>
                                 </button>
                             </label>
-                        </div>
-
-                        <div class="check">
-                            <input type="checkbox" id="item2">
-                            <label for="item2" class="daily">TODO Text 2
-                                <button class="noSelect">
-                                    <span class="text">DELETE</span>
-                                    <span class="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24  24">
-                                            <path
-                                                d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                </button>
-                            </label>
-                        </div>
-
-                        <div class="check">
-                            <input type="checkbox" id="item3">
-                            <label for="item3" class="monthly">TODO Text 3
-                                <button class="noSelect">
-                                    <span class="text">REMOVE</span>
-                                    <span class="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24  24">
-                                            <path
-                                                d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                </button>
-                            </label>
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="done">
                         <h2>DONE</h2>
-                        <div class="check" checked>
+                        <!-- <div class="check">
                             <input type="checkbox" id="item4">
                             <label for="item4">TODO Text 4 <button>Remove</button> </label>
-                        </div>
-
-                        <div class="check">
-                            <input type="checkbox" id="item5">
-                            <label for="item5">TODO Text 5 <button>Remove</button> </label>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </section>

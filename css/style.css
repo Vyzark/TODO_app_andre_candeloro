@@ -154,7 +154,7 @@ header div.filter {
     background-color: var(--accent-color);
 }
 
-#formBottom {
+#filterBottom {
     display: flex;
     gap: 0.9375rem;
     & input[type="search"] {
