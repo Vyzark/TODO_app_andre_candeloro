@@ -4,8 +4,8 @@ const doneList = [];
 
 const priorityList = ["urgent", "daily", "monthly"]
 
-// Separate TODO's into lists:
-// Create a function that will move check marked items from one list to the other (use splice?)
+
+//TODO: IMPORTANT => Create a function that will move check marked items from one list to the other (use splice?)
 
 // Create:
 // 1. filterByPriority --> for the <select> filter

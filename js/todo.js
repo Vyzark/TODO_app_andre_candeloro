@@ -9,7 +9,7 @@ const filterInputTaskName = document.querySelector("#filterBottom input");
 const todoDiv = document.querySelector(".todoContainer>.todo");
 const doneDiv = document.querySelector(".todoContainer>.done");
 
-let idCounter = 1; // Necessary? Use in addTodo
+let idCounter = 1;
 
 //* --------------------------LISTENERS----------------------------------------->>
 formTop.addEventListener("submit", addTodo);
@@ -88,7 +88,7 @@ function printOneTodo(todo, domObj) {
 }
 function printAllTodo(list, domObj) {
     domObj.innerHTML = `<h2>TO DO</h2>`;
-    list.forEach(item => printOneTodo(item, domObj));
+    list.forEach(todo => printOneTodo(todo, domObj));
 }
 
 //* =========== PRINT PRIORITY <OPTION> TAGS ===========
@@ -108,7 +108,9 @@ function printAllOptions(list, domObj) {
 //* --------------------------DELETE FUNCTIONS----------------------------------------->>
 function deleteTodo(event) {
     console.log(event.target);
-    // const deleteTr = event.target.parentNode.parentNode; // Retrieve <tr> element
+    // console.log(event.target.parentNode.parentNode);
+
+    // const deleteButton = event.target; // Retrieve <tr> element
     // const deleteById = Number(event.target.dataset.id); // Retrieve id value of the object to remove
 
     // // alert(`Subscription ID ${deleteById} deleted.`);
