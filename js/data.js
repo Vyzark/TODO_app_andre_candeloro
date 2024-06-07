@@ -1,28 +1,8 @@
-const todoList = [
-    {
-        id: 1,
-        task: "Buy groceries",
-        priority: "daily",
-    },
-    {
-        id: 2,
-        task: "Pay rent",
-        priority: "monthly",
-    },
-    {
-        id: 3,
-        task: "Schedule doctor's appointment",
-        priority: "urgent",
-    },
-];
+const todoList = [];
 
-const doneList = [
-    {
-        id: 5,
-        task: "Finish project report",
-        priority: "urgent",
-    },
-];
+const doneList = [];
+
+const priorityList = ["urgent", "daily", "monthly"]
 
 // Separate TODO's into lists:
 // Create a function that will move check marked items from one list to the other (use splice?)
@@ -51,37 +31,40 @@ function removeAccentuation(text) {
 }
 
 function filterByName(list, text) {
-    return list.filter((todo) =>
+    return list.filter(todo =>
         removeAccentuation(todo.task).includes(removeAccentuation(text))
     );
 }
 
 //TODO: Model - Check functionality
 function filterByPriority(list, domElem) {
-    return list.filter((todo) => todo.priority === domElem.value);
+    return list.filter(todo => todo.priority === domElem.value);
 }
 
-// Function to get a list of priority values. 
+// Function to get a list of priority values.
 // Returns all possible values by default or can receive the todoList or doneList separately
-//? Maybe add a custom priority button?
+//TODO: Add a custom priority button to make it functional
 function getPriorityList(list = [...todoList, ...doneList]) {
-    const newList = []
-    list.forEach((todo) => {
+    const newList = [];
+    list.forEach(todo => {
         newList.push(todo.priority);
-    })
+    });
     console.log(newList);
-    return [...new Set(newList)]
+    return [...new Set(newList)];
 }
 
 //* Load to-do's from Local Storage ------------------------------------>>
-function loadStored() {
-    const localList = JSON.parse(localStorage.getItem("whatToDos"));
+function loadStored(todoOrDone) {
+    const status = (todoOrDone === "todo") ? "whatToDos" : "whatIsDones"
+    const localList = JSON.parse(localStorage.getItem(status));
     return localList;
 }
 
 //* Check Duplicated Objects in a list ------------------------------------>>
 function checkDuplicates(list, newObj) {
-    let isDuped = list.some((todo) => todo.task === newObj.task && todo.priority === newObj.priority);
+    let isDuped = list.some(
+        todo => todo.task === newObj.task && todo.priority === newObj.priority
+    );
     if (!isDuped) {
         // If it's not dupped in the list, return true
         return true;
