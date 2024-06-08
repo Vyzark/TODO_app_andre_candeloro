@@ -1,6 +1,5 @@
 //TODO: Delete Event
 //TODO: FILTER EVENTS
-//TODO: add the property "pointer-events: none" to delete button span, svg and path
 //TODO: Fix to-do's CSS
 //TODO: Add the strike-through text-style for all text in the "Done" list + light grey text-color
 //TODO: Replace the "+" button with an "ADD" styled to "merge" it together with the input field
@@ -22,12 +21,15 @@ filterInputTaskName.addEventListener("input", nameFilter);
 //* =========== ADD EVENTS ===========
 function addTodo(event) {
     event.preventDefault();
-    console.log(event.target.createBtn.value);
+
     const localForm = event.target;
     // Create a unique ID to use in each new object
     const uniqueId = createUniqueId([...todoList, ...doneList]);
     // Check if all inputs have a value
-    if (event.target.addSelector.value === "") {
+    //prettier-ignore
+    if (event.target.addSelector.value === "" && event.target.createBtn.value === "") {
+        return;
+    } else if (event.target.addSelector.value === "") {
         alert("Please, don't leave empty fields");
         return;
     } else if (event.target.createBtn.value === "") {
@@ -42,17 +44,11 @@ function addTodo(event) {
         priority: localForm.addSelector.value,
     };
 
-    console.log("todoList at event before", todoList);
-    console.log("doneList at event before", doneList);
-
     // Check for duplicates to avoid creating the same todo more than once
     if (checkDuplicates(todoList, newItem)) {
         todoList.push(newItem);
         localStorage.setItem("whatToDos", JSON.stringify(todoList)); //* Local storage
         localStorage.setItem("whatIsDones", JSON.stringify(doneList)); //* Local storage
-
-        console.log("todoList at event after", todoList);
-        console.log("doneList at event after", doneList);
 
         printAllTodo(todoList, todoDiv);
     } else {
@@ -71,7 +67,7 @@ function deleteTodo(event) {
     console.log(event.target.parentNode.parentNode);
     const delButton = event.target;
     const divToDelete = event.target.parentNode.parentNode;
-    const listId = divToDelete.id
+    const listId = divToDelete.id;
     console.log("getId", event.target);
     // Remove object from DOM
     // divToDelete.remove()
@@ -104,7 +100,7 @@ function printOneTodo(todo, domObj) {
     input.type = "checkbox";
     input.id = `item${todo.id}`;
 
-    label.for = `item${todo.id}`;
+    label.setAttribute("for", `item${todo.id}`);
     label.classList.add(todo.priority);
     label.textContent = `${todo.task}`;
 
