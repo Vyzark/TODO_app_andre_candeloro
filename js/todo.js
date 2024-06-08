@@ -1,5 +1,9 @@
-//TODO: Replace the "+" button with an "ADD" styled to "merge" it together with the input field
+//TODO: Delete Event
 //TODO: FILTER EVENTS
+//TODO: add the property "pointer-events: none" to delete button span, svg and path
+//TODO: Fix to-do's CSS
+//TODO: Add the strike-through text-style for all text in the "Done" list + light grey text-color
+//TODO: Replace the "+" button with an "ADD" styled to "merge" it together with the input field
 
 //* --------------------------GLOBAL CONST DECLARATION----------------------------------------->>
 const formTop = document.querySelector("#formTop");
@@ -8,8 +12,6 @@ const filterSelectPriority = document.querySelector("#filterBottom select");
 const filterInputTaskName = document.querySelector("#filterBottom input");
 const todoDiv = document.querySelector(".todoContainer>.todo");
 const doneDiv = document.querySelector(".todoContainer>.done");
-
-let idCounter = 1;
 
 //* --------------------------LISTENERS----------------------------------------->>
 formTop.addEventListener("submit", addTodo);
@@ -20,18 +22,32 @@ filterInputTaskName.addEventListener("input", nameFilter);
 //* =========== ADD EVENTS ===========
 function addTodo(event) {
     event.preventDefault();
+    console.log(event.target.createBtn.value);
     const localForm = event.target;
+    // Create a unique ID to use in each new object
+    const uniqueId = createUniqueId([...todoList, ...doneList]);
+    // Check if all inputs have a value
+    if (event.target.addSelector.value === "") {
+        alert("Please, don't leave empty fields");
+        return;
+    } else if (event.target.createBtn.value === "") {
+        alert("Please, don't leave empty fields");
+        return;
+    }
+
+    // Create new object with values from the inputs + generated ID
     const newItem = {
-        id: idCounter,
+        id: uniqueId,
         task: localForm.createBtn.value,
         priority: localForm.addSelector.value,
     };
+
     console.log("todoList at event before", todoList);
     console.log("doneList at event before", doneList);
 
+    // Check for duplicates to avoid creating the same todo more than once
     if (checkDuplicates(todoList, newItem)) {
         todoList.push(newItem);
-        idCounter++;
         localStorage.setItem("whatToDos", JSON.stringify(todoList)); //* Local storage
         localStorage.setItem("whatIsDones", JSON.stringify(doneList)); //* Local storage
 
@@ -39,6 +55,8 @@ function addTodo(event) {
         console.log("doneList at event after", doneList);
 
         printAllTodo(todoList, todoDiv);
+    } else {
+        alert("This to-do already exists in your list");
     }
 
     localForm.reset();
@@ -47,6 +65,30 @@ function addTodo(event) {
 //* =========== FILTER EVENTS ===========
 function priorityFilter(event) {}
 function nameFilter(event) {}
+
+//* =========== DELETE EVENT ===========
+function deleteTodo(event) {
+    console.log(event.target.parentNode.parentNode);
+    const delButton = event.target;
+    const divToDelete = event.target.parentNode.parentNode;
+    const listId = divToDelete.id
+    console.log("getId", event.target);
+    // Remove object from DOM
+    // divToDelete.remove()
+    // console.log(divToDelete);
+    // Remove object from lists
+    // const deleteById = Number(event.target.dataset.id); // Retrieve id value of the object to remove
+
+    // // alert(`Subscription ID ${deleteById} deleted.`);
+
+    // // Find and remove deleted element from list
+    // let index = subscriptions.findIndex(sub => sub.id === deleteById);
+    // if (index !== -1) {
+    //     subscriptions.splice(index, 1);
+    // }
+    // // Removes HTML structure
+    // deleteTr.remove();
+}
 
 //* --------------------------PRINT FUNCTIONS----------------------------------------->>
 
@@ -57,13 +99,14 @@ function printOneTodo(todo, domObj) {
     const button = document.createElement("button");
 
     div.classList.add("check");
+    div.id = todo.id;
 
     input.type = "checkbox";
     input.id = `item${todo.id}`;
 
     label.for = `item${todo.id}`;
     label.classList.add(todo.priority);
-    label.textContent = `${todo.task}`
+    label.textContent = `${todo.task}`;
 
     button.classList.add("noSelect");
     button.id = `button${todo.id}`;
@@ -82,12 +125,18 @@ function printOneTodo(todo, domObj) {
     // Create onClick event for each delete button by ID
     button.addEventListener("click", deleteTodo);
 
-    label.appendChild(button)
-    div.append(input, label);
+    div.append(input, label, button);
     domObj.appendChild(div);
+
+    //// console.log("inside the div", div.innerHTML); // --> LOG
 }
 function printAllTodo(list, domObj) {
-    domObj.innerHTML = `<h2>TO DO</h2>`;
+    if (domObj.classList.value === "done") {
+        domObj.innerHTML = `<h2>DONE</h2>`;
+    } else {
+        domObj.innerHTML = `<h2>TO DO</h2>`;
+    }
+
     list.forEach(todo => printOneTodo(todo, domObj));
 }
 
@@ -105,29 +154,9 @@ function printAllOptions(list, domObj) {
     list.forEach(option => printOneOption(option, domObj));
 }
 
-//* --------------------------DELETE FUNCTIONS----------------------------------------->>
-function deleteTodo(event) {
-    console.log(event.target);
-    // console.log(event.target.parentNode.parentNode);
-
-    // const deleteButton = event.target; // Retrieve <tr> element
-    // const deleteById = Number(event.target.dataset.id); // Retrieve id value of the object to remove
-
-    // // alert(`Subscription ID ${deleteById} deleted.`);
-
-    // // Find and remove deleted element from list
-    // let index = subscriptions.findIndex(sub => sub.id === deleteById);
-    // if (index !== -1) {
-    //     subscriptions.splice(index, 1);
-    // }
-    // // Removes HTML structure
-    // deleteTr.remove();
-}
-
 //* -------------------------------------INIT------------------------------>>
 function init() {
-    //TODO: TEST INIT FUNCTION
-    // const priorityList = getPriorityList(); //! CAN BE USED ONLY IF USING PRIORITY INPUT AS TYPE TEXT
+    // const priorityList = getPriorityList(); // CAN BE USED ONLY IF USING PRIORITY INPUT AS TYPE TEXT
 
     // Initialize the Select Options
     printAllOptions(priorityList, addSelectPriority);
@@ -137,22 +166,19 @@ function init() {
     if (localStorage.getItem("whatToDos")) {
         let todoLocal = loadStored("todo");
 
-        console.log("test local todo", [...todoLocal]);
-
         todoList.push(...todoLocal);
     }
     if (localStorage.getItem("whatIsDones")) {
         let doneLocal = loadStored("done");
 
-        console.log("test local done", [...doneLocal]);
-
         doneList.push(...doneLocal);
     }
 
-    console.log("todoList at init", todoList);
-    console.log("doneList at init", doneList);
-
-    printAllTodo(todoList, todoDiv);
-    printAllTodo(doneList, doneDiv);
+    if (todoList.length !== 0) {
+        printAllTodo(todoList, todoDiv);
+    }
+    if (doneList.length !== 0) {
+        printAllTodo(doneList, doneDiv);
+    }
 }
 init();
