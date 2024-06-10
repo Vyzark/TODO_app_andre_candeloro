@@ -370,7 +370,7 @@ label:before {
     font-size: 1.8rem;
 }
 
-input[type="checkbox"].finished + label:before {
+input[type="checkbox"].showCheckmark + label:before {
     content: "\2714";
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     font-size: 2rem;
@@ -379,11 +379,10 @@ input[type="checkbox"].finished + label:before {
     top: 0.9rem;
     left: 0.7rem;
 }
-input[type="checkbox"].finished + label {
-    color: #2e2e2e;
+.showCheckmark + label {
+    color: black;
     text-decoration: line-through;
-    text-decoration-color: black;
-    text-decoration-style: wavy;
+    text-decoration-color: grey;
 }
 
 .todoContainer label {

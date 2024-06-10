@@ -102,7 +102,7 @@ function printOneTodo(todo, domObj) {
     const input = document.createElement("input");
     const label = document.createElement("label");
     const button = document.createElement("button");
-
+    
     div.classList.add("check");
     div.id = todo.id; // Differentiates each div to avoid mass delete and can be used to get object's ID
 
@@ -126,7 +126,7 @@ function printOneTodo(todo, domObj) {
             </svg>
         </span>
     `;
-
+    
     // Create onClick event for each delete button by ID
     button.addEventListener("click", deleteTodo);
     // Create onChange event for each Checkbox
@@ -134,24 +134,23 @@ function printOneTodo(todo, domObj) {
         taskComplete = todo.isFinished;
         if (taskComplete) {
             todo.isFinished = false;
-            event.target.classList.remove();
+            event.target.classList.remove("showCheckmark");
         } else {
             todo.isFinished = true;
             event.target.classList.add("showCheckmark");
         }
-        console.log("input", event.target);
-        console.log("inside checked function", todo.isFinished);
-        printAllTodo(taskList);
         saveToLocal();
+        printAllTodo(taskList);  //! BUG: PRINT ALL RESETS THE CHANGES TO THE ATTRIBUTES OF THE INPUT
     });
-
+    
     div.append(input, label, button);
     domObj.appendChild(div);
+
 }
 function printAllTodo(list, textFilter = false) {
     // Reset DOM
-    todoDiv.innerHTML = `<h2>TO DO</h2>`;
-    doneDiv.innerHTML = `<h2>DONE</h2>`;
+    todoDiv.innerHTML = `<h2>WHAT TO-DO's</h2>`;
+    doneDiv.innerHTML = `<h2>WHAT IS DONE</h2>`;
 
     // Checks if activating function from a filter event to replace HTML section titles
     // Shows all filtered to-do's, regardless of completion status, in the same list
