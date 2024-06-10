@@ -108,6 +108,11 @@ function printOneTodo(todo, domObj) {
 
     input.type = "checkbox";
     input.id = `item${todo.id}`;
+    if(todo.isFinished) {
+        input.classList.add("showCheckmark");
+    } else {
+        input.classList.remove("showCheckmark");
+    }
 
     label.setAttribute("for", `item${todo.id}`);
     label.classList.add(todo.priority);
@@ -134,13 +139,11 @@ function printOneTodo(todo, domObj) {
         taskComplete = todo.isFinished;
         if (taskComplete) {
             todo.isFinished = false;
-            event.target.classList.remove("showCheckmark");
         } else {
             todo.isFinished = true;
-            event.target.classList.add("showCheckmark");
         }
         saveToLocal();
-        printAllTodo(taskList);  //! BUG: PRINT ALL RESETS THE CHANGES TO THE ATTRIBUTES OF THE INPUT
+        printAllTodo(taskList);
     });
     
     div.append(input, label, button);
