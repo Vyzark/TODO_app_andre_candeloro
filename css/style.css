@@ -378,21 +378,22 @@ label:before {
     content: "\25A2";
     display: block;
     font-size: 1.8rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
+.showCheckmark + label {
+    color: lightgray;
+    /* text-decoration: line-through; */
+    text-decoration-color: grey;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
 input[type="checkbox"].showCheckmark + label:before {
     content: "\2714";
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #57f55f;
-    position: absolute;
-    top: 0.9rem;
-    left: 0.7rem;
-}
-.showCheckmark + label {
-    color: black;
-    text-decoration: line-through;
-    text-decoration-color: grey;
+    text-decoration: none;
 }
 
 .todoContainer label {
@@ -400,6 +401,9 @@ input[type="checkbox"].showCheckmark + label:before {
     &:hover {
         background-color: #00000050;
     }
+}
+input[type="checkbox"]:checked + label {
+    background-color: #ffffff;
 }
 
 /** -----------------------ANIMATIONS----------------------- **/
