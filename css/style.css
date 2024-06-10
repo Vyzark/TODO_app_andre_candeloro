@@ -20,7 +20,7 @@
     --bg-color: #67a4e6ef;
     --bg-dark: #063750;
     --accent-color: #90cec8;
-    --urgent-color: #ff3c00;
+    --urgent-color: #ff6333;
     --daily-color: #fec601;
     --monthly-color: #3bbeff;
 }
@@ -94,30 +94,31 @@ header div.addNew {
 #formTop {
     position: relative;
     display: flex;
-    gap: 0.9375rem;
+    align-items: center;
+    justify-content: space-between;
+}
 
-    & select {
-        position: absolute;
-        right: 13.125rem;
-        top: 0.018rem;
-        padding: 0.5rem 0.9375rem;
-        background-color: #2e2e2e;
-        border: none;
-        color: white;
-        font-size: 1.02rem;
-        &:focus {
-            background-color: var(--bg-dark);
-        }
+#formTop select {
+    position: absolute;
+    right: 12rem;
+    top: 0.5rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    background-color: #2e2e2e;
+    border: none;
+    color: white;
+    font-size: 1.02rem;
+    &:focus {
+        text-shadow: 0.7px 0.7px 1px var(--accent-color);
     }
 }
 
 #formTop input[type="text"] {
-    width: 80%;
-    height: 2rem;
+    width: 85%;
+    height: 40px;
     background-color: #2e2e2e;
-    border-radius: 0.625rem 0rem 0rem 0.625rem;
+    border-radius: 0.625rem;
     border: none;
-    padding: 0.15rem 0.15rem 0.15rem 0.5rem;
+    padding: 0rem 0.15rem 0rem 0.5rem;
     color: white;
     font-size: 0.875rem;
     &::placeholder {
@@ -125,30 +126,45 @@ header div.addNew {
     }
 }
 .submit-button {
-    position: absolute;
-    right: 6.18rem;
-    top: -0.1rem;
-    font-size: 1.0625rem;
-    font-weight: 800;
-    letter-spacing: 0.125rem;
+    position: relative;
+    right: -1rem;
+    background: #00000000;
     color: white;
-    padding: 0.5em 2em;
-    box-shadow: 0 0.75rem 1rem 0 rgba(0, 0, 0, 0.24);
-    background: #2e2e2e;
+    text-decoration: none;
     border: none;
-    border-radius: 0 0.625rem 0.625rem 0;
-    transition: all 0.5s ease;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1rem 3rem;
+    transition: 0.2s;
 
     &:hover {
-        background: linear-gradient(90deg, #e65773 0%, #3f5efb 100%);
-        cursor: pointer;
-        color: #202020;
-        transition: color 0.5s ease;
-        /* transition: background-color 1s ease; */
+        letter-spacing: 0.2rem;
+        padding: 1.1rem 3.1rem;
+        background: #41fa4a85;
+        color: var(--daily-color);
+        font-weight: 800;
+        transition: 0.3s;
+        animation: box 3s infinite;
     }
-    &:active {
-        transform: translate(0em, 0.15em);
-        transition: 0.5s;
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 2px;
+        background: #2e2e2e;
+    }
+    & span {
+        position: relative;
+        z-index: 1;
+    }
+    &:active:before {
+        background-color: var(--daily-color);
+        box-shadow: 0 0 5px 5px #06375041;
+    }
+    &:active span {
+        color: black;
+        /* letter-spacing: 0.5rem; */
+        transition: 0.15s;
     }
 }
 
@@ -438,4 +454,49 @@ input[type="checkbox"].showCheckmark + label:before {
         text-shadow: 0.5px 0.5px 2px #57f55f;
         box-shadow: 0px 0px 8px 5px #57f55fde;
     }
+}
+
+@keyframes box {
+    0% {
+        box-shadow: 0px 0px 8px 5px #57f55fde;
+    }
+    10% {
+        box-shadow: 0px 0px 9px 6px #57f55fde;
+    }
+    20% {
+        box-shadow: 0px 0px 10px 7px #57f55fde;
+    }
+    30% {
+        box-shadow: 0px 0px 12px 8px #57f55fde;
+    }
+    40% {
+        box-shadow: 0px 0px 14px 9px #57f55fde;
+    }
+    50% {
+        box-shadow: 0px 0px 16px 10px #57f55fde;
+    }
+    60% {
+        box-shadow: 0px 0px 14px 9px #57f55fde;
+    }
+    70% {
+        box-shadow: 0px 0px 12px 8px #57f55fde;
+    }
+    80% {
+        box-shadow: 0px 0px 10px 7px #57f55fde;
+    }
+    90% {
+        box-shadow: 0px 0px 9px 6px #57f55fde;
+    }
+    100% {
+        box-shadow: 0px 0px 8px 5px #57f55fde;
+    }
+    /* 0% {
+        box-shadow: #57f55fde;
+    }
+    50% {
+        box-shadow: 0 0 20px 2px #57f55fde;
+    }
+    100% {
+        box-shadow: #57f55fde;
+    } */
 }

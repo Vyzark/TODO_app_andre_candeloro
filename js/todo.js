@@ -69,7 +69,7 @@ function priorityFilter(event) {
         printAllTodo(taskList);
         return;
     }
-    const filteredList = filterByPriority(taskList, event.target);
+    const filteredList = filterByPriority(taskList, priority);
     printAllTodo(filteredList, priority);
 }
 

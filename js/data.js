@@ -23,9 +23,9 @@ function filterByText(list, text) {
     return filteredList;
 }
 
-function filterByPriority(list, priority) {
+function filterByPriority(list, priorityLevel) {
     // prettier-ignore
-    return list.filter(todo => todo.priority.toLowerCase() === priority.toLowerCase());
+    return list.filter(todo => todo.priority.toLowerCase() === priorityLevel.toLowerCase());
 }
 
 function filterTaskList(list, status) {
@@ -62,6 +62,7 @@ function removeAccentuation(text) {
 
 //* Check Duplicated Objects in a list ------------------------------------>>
 function checkDuplicates(list, newObj) {
+    console.log();
     let isDuped = list.some(
         todo =>
             todo.task.toLowerCase() === newObj.task.toLowerCase() &&
