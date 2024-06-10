@@ -361,7 +361,7 @@ input[type="checkbox"] {
 }
 
 /* Check symbol */
-label::before {
+label:before {
     content: "\25A2";
     display: block;
     position: absolute;
@@ -370,7 +370,7 @@ label::before {
     font-size: 1.8rem;
 }
 
-input[type="checkbox"]:checked + label::before {
+input[type="checkbox"].finished + label:before {
     content: "\2714";
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     font-size: 2rem;
@@ -379,6 +379,13 @@ input[type="checkbox"]:checked + label::before {
     top: 0.9rem;
     left: 0.7rem;
 }
+input[type="checkbox"].finished + label {
+    color: #2e2e2e;
+    text-decoration: line-through;
+    text-decoration-color: black;
+    text-decoration-style: wavy;
+}
+
 .todoContainer label {
     background-color: #00000030;
     &:hover {
