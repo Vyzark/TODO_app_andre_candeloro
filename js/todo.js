@@ -1,14 +1,3 @@
-//TODO: Add event for checkboxes, should move div's to and from todoList/doneList
-//TODO: Change H2's to "WHAT TO-D0" and "WHAT IS DONE"
-//TODO: Add the strike-through text-style for all text in the "Done" list + light grey text-color
-//TODO: Adjust addForm text input height to match filter text input (40px) CSS
-//TODO: Add outline or border to "ADD" button?
-//TODO: Change the addForm priority selector bg color to match text input bg color
-//TODO: Create a promise for an async while loop that prints a small red div with "don't leave empty fields"
-//? while (input[type="text"].value === "" || addSelector.value === "")
-//TODO: Don't forget MEDIA QUERIES CSS
-
-//* --------------------------GLOBAL CONST DECLARATION----------------------------------------->>
 const formTop = document.querySelector("#formTop");
 const addSelectPriority = document.querySelector("#addSelector");
 const filterSelectPriority = document.querySelector("#filterBottom select");
@@ -21,40 +10,51 @@ formTop.addEventListener("submit", addTodo);
 filterSelectPriority.addEventListener("change", priorityFilter);
 filterInputTaskName.addEventListener("input", nameFilter);
 
+//* --------------------------------INIT----------------------------------->>
+
+function init() {
+    // Initialize the Select Options
+    printAllOptions(priorityList, addSelectPriority);
+    printAllOptions(priorityList, filterSelectPriority);
+
+    // Initialize the To-Do's from local storage if not empty
+    const localList = loadLocal();
+    if (localList !== null && localList.length !== 0) {
+        taskList.push(...localList);
+        printAllTodo(taskList);
+    }
+}
+init();
+
 //* --------------------------EVENT FUNCTIONS----------------------------------------->>
-//* =========== ADD EVENTS ===========
+//* =========== ADD EVENT ===========
 function addTodo(event) {
     event.preventDefault();
-
     const topForm = event.target;
+    const selectValue = topForm.addSelector.value;
+    const textInputValue = topForm.createBtn.value;
+
     // Create a unique ID to use in each new object
-    const uniqueId = createUniqueId([...todoList, ...doneList]);
-    // Check if all inputs have a value
-    //prettier-ignore
-    if (event.target.addSelector.value === "" && event.target.createBtn.value === "") {
-        return;
-    } else if (event.target.addSelector.value === "") {
-        alert("Please, don't leave empty fields");
-        return;
-    } else if (event.target.createBtn.value === "") {
-        alert("Please, don't leave empty fields");
+    const uniqueId = createUniqueId(taskList);
+    // Check if all inputs are valid (not empty)
+    const isValidInput = checkInputStatus(selectValue, textInputValue);
+    if (!isValidInput) {
         return;
     }
 
     // Create new object with values from the inputs + generated ID
     const newItem = {
         id: uniqueId,
-        task: topForm.createBtn.value,
-        priority: topForm.addSelector.value, //TODO: ===> ADD "FINISHED" PROPERTY WITH VALUE FALSE. ADD ALL OBJECT WITH FINISHED: TRUE TO DONE_LIST
+        task: textInputValue,
+        priority: selectValue,
+        isFinished: false, // Objects are created with "finished: false" and modified to true when checked
     };
 
     // Check for duplicates to avoid creating the same todo more than once
-    if (checkDuplicates(todoList, newItem)) {
-        todoList.push(newItem);
-        localStorage.setItem("whatToDos", JSON.stringify(todoList)); //* Local storage
-        localStorage.setItem("whatIsDones", JSON.stringify(doneList)); //* Local storage
-
-        printAllTodo(todoList, todoDiv);
+    if (checkDuplicates(taskList, newItem)) {
+        taskList.push(newItem);
+        saveToLocal(); //* Updates local storage
+        printAllTodo(taskList); // Prints the new task to the To-Do section
     } else {
         alert("This to-do already exists in your list");
     }
@@ -64,85 +64,39 @@ function addTodo(event) {
 
 //* =========== FILTER EVENTS ===========
 function priorityFilter(event) {
-    if (event.target.value === "") {
-        resetAllTodo();
+    const priority = event.target.value;
+    if (priority === "") {
+        printAllTodo(taskList);
         return;
     }
-    // prettier-ignore
-    const filteredList = filterByPriority([...todoList, ...doneList], event.target);
-    printAllTodo(filteredList, todoDiv, event.target.value);
+    const filteredList = filterByPriority(taskList, event.target);
+    printAllTodo(filteredList, priority);
 }
 
 function nameFilter(event) {
-    // prettier-ignore
-    const filteredList = filterByText([...todoList, ...doneList], event.target.value);
-    console.log(filteredList);
-    printAllTodo(filteredList, todoDiv, event.target.value);
+    const inputText = event.target.value;
+    const filteredList = filterByText(taskList, inputText);
+    printAllTodo(filteredList, inputText);
 }
 
 //* =========== DELETE EVENT ===========
 function deleteTodo(event) {
-    const divToDelete = event.target.parentElement; //* Using "parentNode" WON'T retrieve created ID for the element
-    const objectId = Number(divToDelete.id);
+    //* Node Objects won't have all of the element's attributes
+    //* Using "parentNode" WON'T retrieve created ID for the element
+    const divToDelete = event.target.parentElement;
+    const objectId = divToDelete.id;
+
     // Find and remove deleted element from list
-    if (divToDelete.parentElement.classList.contains("todo")) {
-        searchAndDestroy(todoList, objectId);
-    } else {
-        console.log("id", objectId);
-        console.log(event.target.parentElement);
-        console.log("removed -- ", searchAndDestroy(doneList, objectId));
-    }
+    searchAndDestroy(taskList, objectId);
+
     // Remove object from DOM
     divToDelete.remove();
     // Update local storage
-    localStorage.setItem("whatToDos", JSON.stringify(todoList)); //* Local storage
-    localStorage.setItem("whatIsDones", JSON.stringify(doneList)); //* Local storage
-}
-
-//* =========== CHECKBOX CHECK EVENT ===========
-function migrate(event) {
-    const objectId = event.target.parentElement.id;
-    console.log(event.target);
-
-    if (event.target.checked) {
-        console.log("Inside Check");
-        // Splice object from todoList
-        const migratoryObj = searchAndDestroy(todoList, objectId);
-        // Push object to doneList
-        doneList.push(...migratoryObj);
-        // event.target.checked = true
-        event.target.setAttribute("checked", true);
-    } else {
-        console.log("Inside Uncheck");
-        // Splice object from doneList
-        console.log("before, done -- ", doneList);
-        console.log("id", objectId);
-
-        const migratoryObj = searchAndDestroy(doneList, objectId);
-
-        console.log("after, done -- ", doneList);
-
-        // Push object to todoList
-
-        console.log("before, todo -- ", todoList);
-
-        todoList.push(migratoryObj);
-
-        console.log("after, todo -- ", todoList);
-        // event.target.checked = false
-        event.target.removeAttribute("checked", false);
-    }
-    console.log(event.target);
-    // Reset the DOM
-    resetAllTodo();
-
-    // Update local storage
-    localStorage.setItem("whatToDos", JSON.stringify(todoList)); //* Local storage
-    localStorage.setItem("whatIsDones", JSON.stringify(doneList)); //* Local storage
+    saveToLocal();
 }
 
 //* --------------------------PRINT FUNCTIONS----------------------------------------->>
-
+//* =========== PRINT TASKS ===========
 function printOneTodo(todo, domObj) {
     const div = document.createElement("div");
     const input = document.createElement("input");
@@ -150,7 +104,7 @@ function printOneTodo(todo, domObj) {
     const button = document.createElement("button");
 
     div.classList.add("check");
-    div.id = todo.id; // Differentiates each button to avoid mass delete and can be used to get object's ID
+    div.id = todo.id; // Differentiates each div to avoid mass delete and can be used to get object's ID
 
     input.type = "checkbox";
     input.id = `item${todo.id}`;
@@ -176,37 +130,48 @@ function printOneTodo(todo, domObj) {
     // Create onClick event for each delete button by ID
     button.addEventListener("click", deleteTodo);
     // Create onChange event for each Checkbox
-    input.addEventListener("change", migrate);
+    input.addEventListener("click", event => {
+        taskComplete = todo.isFinished;
+        if (taskComplete) {
+            todo.isFinished = false;
+            event.target.classList.remove();
+        } else {
+            todo.isFinished = true;
+            event.target.classList.add("showCheckmark");
+        }
+        console.log("input", event.target);
+        console.log("inside checked function", todo.isFinished);
+        printAllTodo(taskList);
+        saveToLocal();
+    });
 
     div.append(input, label, button);
     domObj.appendChild(div);
 }
-function printAllTodo(list, domObj, filter = false) {
-    if (domObj.classList.value === "done" && !filter) {
-        domObj.innerHTML = `<h2>DONE</h2>`;
-    } else if (domObj.classList.value === "todo" && !filter) {
-        domObj.innerHTML = `<h2>TO DO</h2>`;
-    }
+function printAllTodo(list, textFilter = false) {
+    // Reset DOM
+    todoDiv.innerHTML = `<h2>TO DO</h2>`;
+    doneDiv.innerHTML = `<h2>DONE</h2>`;
 
-    if (filter === "") {
-        domObj.innerHTML = `<h2>TO DO</h2><h2>DONE</h2>`;
-        resetAllTodo();
-        return;
-    }
-
-    // Checks if activating function from a filter event to erase all HTML
+    // Checks if activating function from a filter event to replace HTML section titles
     // Shows all filtered to-do's, regardless of completion status, in the same list
-    if (filter) {
-        domObj.nextElementSibling.innerHTML = "";
-        domObj.innerHTML = `<h2>YOUR ${filter.toUpperCase()} TO-DO's</h2>`;
+    if (textFilter && textFilter !== "") {
+        todoDiv.nextElementSibling.innerHTML = "";
+        todoDiv.innerHTML = `<h2>YOUR ${textFilter.toUpperCase()} TO-DO's</h2>`;
     }
-    list.forEach(todo => printOneTodo(todo, domObj));
+
+    updateLists(list);
 }
 
-// Resets both to-do lists to print all existing to-do's state
-function resetAllTodo() {
-    printAllTodo(todoList, todoDiv);
-    printAllTodo(doneList, doneDiv);
+function updateLists(list) {
+    // Filter tasks by completion
+    const finishedTasks = filterTaskList(list, "finished");
+    const unfinishedTasks = filterTaskList(list, "unfinished");
+    // Print all tasks
+    unfinishedTasks.forEach(todo => printOneTodo(todo, todoDiv));
+    finishedTasks.forEach(todo => printOneTodo(todo, doneDiv));
+    // Updates Local Storage
+    saveToLocal();
 }
 
 //* =========== PRINT PRIORITY <OPTION> TAGS ===========
@@ -223,23 +188,19 @@ function printAllOptions(list, domObj) {
     list.forEach(option => printOneOption(option, domObj));
 }
 
-//* -------------------------------------INIT------------------------------>>
-function init() {
-    // const priorityList = getPriorityList(); // CAN BE USED ONLY IF USING PRIORITY INPUT AS TYPE TEXT
+//* --------------------------AUXILIARY FUNCTIONS----------------------------------------->>
 
-    // Initialize the Select Options
-    printAllOptions(priorityList, addSelectPriority);
-    printAllOptions(priorityList, filterSelectPriority);
-
-    // Initialize the To-Do's from local storage if not empty
-    initGetLocal();
-
-    // Check if lists are empty before calling print functions
-    if (todoList.length !== 0) {
-        printAllTodo(todoList, todoDiv);
-    }
-    if (doneList.length !== 0) {
-        printAllTodo(doneList, doneDiv);
+function checkInputStatus(selectorInput, textInput) {
+    //prettier-ignore
+    if (selectorInput === "" && textInput === "") {
+        return false;
+    } else if (selectorInput === "") {
+        alert("Please, don't leave empty fields");
+        return false;
+    } else if (textInput === "") {
+        alert("Please, don't leave empty fields");
+        return false;
+    } else {
+        return true
     }
 }
-init();

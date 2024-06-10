@@ -1,45 +1,40 @@
-const todoList = [];
-
-const doneList = [];
-
+const taskList = [];
 const priorityList = ["urgent", "daily", "monthly"];
 
-//TODO: IMPORTANT => Create a function that will move check marked items from one list to the other (use splice?)
-
-//* --------------------------FILTER FUNCTIONS----------------------------------------->>
-function filterByText(list, text) {
-    console.log(list.includes());
-    return list.filter(todo => {
-        const taskFix = removeAccentuation(todo.task).toLowerCase();
-        const textFix = removeAccentuation(text).toLowerCase();
-        return taskFix.includes(textFix);
-    });
+function saveToLocal() {
+    // Updates Local Storage
+    localStorage.setItem("myTasks", JSON.stringify(taskList));
 }
-
-function filterByPriority(list, domElem) {
-    return list.filter(todo => todo.priority === domElem.value);
-}
-
-//* --------------------------LOCAL STORAGE FUNCTIONS----------------------------------------->>
-
-//* Load to-do's from Local Storage ------------------------------------>>
-function loadStored(todoOrDone) {
-    const status = todoOrDone === "todo" ? "whatToDos" : "whatIsDones";
-    const localList = JSON.parse(localStorage.getItem(status));
+function loadLocal() {
+    // Gets the saved list from Local Storage
+    const localList = JSON.parse(localStorage.getItem("myTasks"));
     return localList;
 }
 
-//* Get saved HTML from local storage and pushes all found elements into their lists ------------------------------------>>
-function initGetLocal() {
-    if (localStorage.getItem("whatToDos")) {
-        let todoLocal = loadStored("todo");
+//* --------------------------FILTER FUNCTIONS----------------------------------------->>
+function filterByText(list, text) {
+    const filteredList = list.filter(todo => {
+        // Remove all accents and upper case letters
+        const taskFix = removeAccentuation(todo.task).toLowerCase();
+        const textFix = removeAccentuation(text).toLowerCase();
 
-        todoList.push(...todoLocal);
-    }
-    if (localStorage.getItem("whatIsDones")) {
-        let doneLocal = loadStored("done");
+        return taskFix.includes(textFix);
+    });
+    return filteredList;
+}
 
-        doneList.push(...doneLocal);
+function filterByPriority(list, priority) {
+    // prettier-ignore
+    return list.filter(todo => todo.priority.toLowerCase() === priority.toLowerCase());
+}
+
+function filterTaskList(list, status) {
+    const finished = list.filter(todo => todo.isFinished);
+    const unfinished = list.filter(todo => !todo.isFinished);
+    if (status === "finished") {
+        return finished;
+    } else {
+        return unfinished;
     }
 }
 
@@ -80,13 +75,12 @@ function checkDuplicates(list, newObj) {
 }
 
 //* Generate a unique ID ------------------------------------>>
-
 function createUniqueId(listOfObjects) {
     // Check if list is empty to start from 0
     if (listOfObjects.length === 0) {
         return 0;
     }
-    // Get all IDs from the todoList
+    // Get all IDs from the taskList
     const existingIds = listOfObjects.map(obj => obj.id);
     // Get the highest ID value and increase it by 1
     const newId = Math.max(...existingIds) + 1;
@@ -101,6 +95,8 @@ function searchAndDestroy(list, objectId) {
     let index = list.findIndex(todo => todo.id === objectId);
     if (index !== -1) {
         return list.splice(index, 1);
+    } else {
+        alert("Task not found.");
     }
 }
 
@@ -108,7 +104,7 @@ function searchAndDestroy(list, objectId) {
 //* Function to get a list of priority values ------------------------------------>>
 // Returns all possible values by default or can receive the todoList or doneList separately
 //TODO: Add an input text priority button to make it functional
-function getPriorityList(list = [...todoList, ...doneList]) {
+function getPriorityList(list = taskList) {
     const newList = [];
     list.forEach(todo => {
         newList.push(todo.priority);
